@@ -17,7 +17,9 @@ namespace ProjetoLojaMVC.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "Sales Web MVC App from C# Course";
+            ViewData["Student"] = "Denis Fioravante";
+            ViewData["Email"] = "denisfioravante722@hotmail.com";
 
             return View();
         }
