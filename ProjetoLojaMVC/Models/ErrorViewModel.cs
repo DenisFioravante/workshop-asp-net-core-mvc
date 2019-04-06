@@ -1,6 +1,6 @@
 using System;
 
-namespace ProjetoLojaMVC.Models
+namespace ProjetoLojaMVC.Models.ViewModels
 {
     public class ErrorViewModel
     {
