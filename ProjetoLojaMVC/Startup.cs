@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using ProjetoLojaMVC.Models;
 
+
 namespace ProjetoLojaMVC
 {
     public class Startup
@@ -37,11 +38,13 @@ namespace ProjetoLojaMVC
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddDbContext<ProjetoLojaMVCContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("ProjetoLojaMVCContext")));
+                    options.UseMySql(Configuration.GetConnectionString("ProjetoLojaMVCContext"), builder => 
+                    builder.MigrationsAssembly("ProjetoLojaMVC")));
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+
+            // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
