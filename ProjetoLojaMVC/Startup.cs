@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using ProjetoLojaMVC.Models;
+using ProjetoLojaMVC.Data;
 
 
 namespace ProjetoLojaMVC
@@ -40,15 +41,19 @@ namespace ProjetoLojaMVC
             services.AddDbContext<ProjetoLojaMVCContext>(options =>
                     options.UseMySql(Configuration.GetConnectionString("ProjetoLojaMVCContext"), builder => 
                     builder.MigrationsAssembly("ProjetoLojaMVC")));
+
+            //REGISTRO DO Seeding Services Que foi criado em DATA
+            services.AddScoped<SeedingService>();
         }
 
 
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-            public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+            public void Configure(IApplicationBuilder app, IHostingEnvironment env, SeedingService seedingService)
         {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment())//se está no perfil de desenvolvimento
             {
                 app.UseDeveloperExceptionPage();
+                seedingService.Seed();//chamada o método para popular a base de dados
             }
             else
             {
