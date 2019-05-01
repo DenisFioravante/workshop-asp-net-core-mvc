@@ -21,6 +21,13 @@ namespace ProjetoLojaMVC.Services
             return _context.Seller.ToList();//retorna uma lista com todos os vendedores
         }
 
+        public void Insert(Seller obj)//INSERE O FUNCIONÁRIO CADASTRADO NO BANCO DE DADOS
+        {
+            _context.Add(obj);
+            _context.SaveChanges();
+        }
+
+
 
     }
 }
