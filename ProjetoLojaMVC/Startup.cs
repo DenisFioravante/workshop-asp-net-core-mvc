@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using ProjetoLojaMVC.Models;
 using ProjetoLojaMVC.Data;
+using ProjetoLojaMVC.Services;
 
 
 namespace ProjetoLojaMVC
@@ -44,6 +45,7 @@ namespace ProjetoLojaMVC
 
             //REGISTRO DO Seeding Services Que foi criado em DATA
             services.AddScoped<SeedingService>();
+            services.AddScoped<SellerService>();
         }
 
 
