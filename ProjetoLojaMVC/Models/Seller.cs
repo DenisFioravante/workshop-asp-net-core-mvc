@@ -14,6 +14,7 @@ namespace ProjetoLojaMVC.Models
         public double BaseSalary { get; set; }
         public DateTime BirthDate { get; set; }
         public Departament Departament { get; set; }
+        public int DepartamentId { get; set; }// ao criar essa prorpiedade o entiti framework irá garantir que o ID nunca seja nulo
         public ICollection<SalesRecord> Sales { get; set; } = new List<SalesRecord>();
 
         public Seller() { }
