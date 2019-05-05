@@ -46,6 +46,8 @@ namespace ProjetoLojaMVC
             //REGISTRO DO Seeding Services Que foi criado em DATA
             services.AddScoped<SeedingService>();
             services.AddScoped<SellerService>();
+            services.AddScoped<DepartmentService>();
+
         }
 
 

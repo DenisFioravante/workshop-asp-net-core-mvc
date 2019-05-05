@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ProjetoLojaMVC.Models;
+using ProjetoLojaMVC.Models.ViewModels;
 using ProjetoLojaMVC.Services;
 
 namespace ProjetoLojaMVC.Controllers
@@ -11,10 +12,12 @@ namespace ProjetoLojaMVC.Controllers
     public class SellersController : Controller
     {
         private readonly SellerService _sellerService;
+        private readonly DepartmentService _departmentService;
         
-        public SellersController (SellerService sellerService)//criando a dependencia
+        public SellersController (SellerService sellerService, DepartmentService departmentService)//criando a dependencia
         {
             _sellerService = sellerService;
+            _departmentService = departmentService;
         }
         public IActionResult Index()
         {
@@ -24,7 +27,10 @@ namespace ProjetoLojaMVC.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            var departments = _departmentService.FindALL(); //busca todos os departamentos do banco
+            var viewModel = new SellerFormViewModel { Departaments = departments };//pega todos os departamentos 
+            return View(viewModel);
+
         }
 
         [HttpPost]//INDICA QUE A AÇÃO É DE POST

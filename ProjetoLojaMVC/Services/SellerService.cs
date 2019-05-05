@@ -23,7 +23,7 @@ namespace ProjetoLojaMVC.Services
 
         public void Insert(Seller obj)//INSERE O FUNCIONÁRIO CADASTRADO NO BANCO DE DADOS
         {
-            obj.Departament = _context.Departament.First();//associa o primeiro departamento ao novo vendadedor cadastrado (APENAS PARA TESTE)
+            //obj.Departament = _context.Departament.First();//associa o primeiro departamento ao novo vendadedor cadastrado (APENAS PARA TESTE)
             _context.Add(obj);
             _context.SaveChanges();
         }
