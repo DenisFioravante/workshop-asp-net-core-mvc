@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ProjetoLojaMVC.Data;
 using ProjetoLojaMVC.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProjetoLojaMVC.Services
 {
@@ -30,7 +31,9 @@ namespace ProjetoLojaMVC.Services
 
         public Seller FindById(int id)
         {
-            return _context.Seller.FirstOrDefault(obj => obj.Id == id);
+            return _context.Seller.Include(obj => obj.Departament).FirstOrDefault(obj => obj.Id == id);//POR DEFAUL ELE SÓ TRAZ O NOME DO VENDEDOR 
+            //CONTUDO COM A EXPRESSÃO LAMBDA FOI INCLUÍDO O DEPARTAMENTO PARA INCLUIR A EXPRESSÃO LABDA FOI CHAMADA A BIBLIOTECA 
+            // using Microsoft.EntityFrameworkCore;
         }
 
         public void Remove(int id)

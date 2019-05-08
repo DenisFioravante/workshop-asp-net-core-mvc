@@ -41,7 +41,7 @@ namespace ProjetoLojaMVC.Controllers
             return RedirectToAction(nameof(Index));//depois de estanciar o objeto a ação irá redirecionar para o método Index
         }
 
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(int? id)//o (?) indica que o ID é opcional
         {
             if(id == null)
             {
@@ -62,6 +62,22 @@ namespace ProjetoLojaMVC.Controllers
         {
             _sellerService.Remove(id);
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var obj = _sellerService.FindById(id.Value);//pega o valor do ID
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
         }
 
     }
