@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ProjetoLojaMVC.Data;
 using ProjetoLojaMVC.Models;
 using Microsoft.EntityFrameworkCore;
+using ProjetoLojaMVC.Services.Excepiton;
 
 namespace ProjetoLojaMVC.Services
 {
@@ -42,6 +43,27 @@ namespace ProjetoLojaMVC.Services
             _context.Seller.Remove(obj);
             _context.SaveChanges();//FAZ A ALTERAÇÃO NO BANCO DE DADOS
         }
+        public void Update(Seller obj)
+        {
+            if (!_context.Seller.Any(x => x.Id == obj.Id))
+            {
+                throw new NotFoundException("Id not found");
 
+            }
+
+            try
+            {
+                _context.Update(obj);
+                _context.SaveChanges();
+
+            }
+
+            catch (DbConcurrencyException e)//caso tenha alguma concorrencia no banco de DADOS
+            {
+                throw new DbConcurrencyException(e.Message);//ESSA É UMA EXCESSÃO DA CAMADA DE DADOS, NOS ESTAMOS CONTROLANDO AS EXECSSÕES DE SERVIÇO   
+            }
+          
+            
+        }
     }
 }
