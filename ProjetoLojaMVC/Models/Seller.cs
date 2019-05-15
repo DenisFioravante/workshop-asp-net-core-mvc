@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Linq;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjetoLojaMVC.Models
 {
@@ -10,8 +11,17 @@ namespace ProjetoLojaMVC.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string  Email { get; set; }
+
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+
+        [Display(Name = "Base Salary")]
+        [DisplayFormat(DataFormatString ="{0:F2}")]//salário com dias casa DECIMAIS
         public double BaseSalary { get; set; }
+
+        [Display(Name = "Birth Date")]//Irá aparecer na página da forma que foi escrita
+        [DataType(DataType.Date)]//customiza o forma da DATA na página
+        [DisplayFormat(DataFormatString ="{0:dd/MM/yyyy}")]//configura o formato da data
         public DateTime BirthDate { get; set; }
         public Departament Departament { get; set; }
         public int DepartamentId { get; set; }// ao criar essa prorpiedade o entiti framework irá garantir que o ID nunca seja nulo
