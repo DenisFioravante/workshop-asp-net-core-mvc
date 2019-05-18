@@ -21,15 +21,15 @@ namespace ProjetoLojaMVC.Controllers
             _sellerService = sellerService;
             _departmentService = departmentService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult>Index()
         {
-            var list = _sellerService.FindAll();
+            var list = await _sellerService.FindAllAsync();
             return View(list);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var departments = _departmentService.FindALL(); //busca todos os departamentos do banco
+            var departments = await _departmentService.FindALLAsync(); //busca todos os departamentos do banco
             var viewModel = new SellerFormViewModel { Departaments = departments };//pega todos os departamentos 
             return View(viewModel);
 
@@ -37,27 +37,27 @@ namespace ProjetoLojaMVC.Controllers
 
         [HttpPost]//INDICA QUE A AÇÃO É DE POST
         [ValidateAntiForgeryToken]//PROTEÇÃO CONTRA O ENVIO DE DADOS MALICIOSOS APROVEITANDO A AUTENTICAÇÃO
-        public IActionResult Create(Seller seller)// Recebe o objeto da requisição e o estancia É A ESSA AÇÃO QUE IRÁ DE FATO INSERIR O VENDEODR NO BANCO
+        public async Task<IActionResult> Create(Seller seller)// Recebe o objeto da requisição e o estancia É A ESSA AÇÃO QUE IRÁ DE FATO INSERIR O VENDEODR NO BANCO
         {
             if (!ModelState.IsValid)//testa se a view é válida
             {
-                var departaments = _departmentService.FindALL();
+                var departaments = await _departmentService.FindALLAsync();
                 var viewModel = new SellerFormViewModel { Seller = seller, Departaments = departaments };
 
                 return View(viewModel);
             }
-            _sellerService.Insert(seller);
+            await _sellerService.InsertAsync(seller);
             return RedirectToAction(nameof(Index));//depois de estanciar o objeto a ação irá redirecionar para o método Index
         }
 
-        public IActionResult Delete(int? id)//o (?) indica que o ID é opcional
+        public async Task<IActionResult> Delete(int? id)//o (?) indica que o ID é opcional
         {
             if(id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not provided"});//será direcionar para a página de erro
             }
 
-            var obj = _sellerService.FindById(id.Value);//pega o valor do ID
+            var obj =  await _sellerService.FindByIdAsync(id.Value);//pega o valor do ID
             if(obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not found" });
@@ -67,20 +67,21 @@ namespace ProjetoLojaMVC.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete (int id)
+
+        public async Task<IActionResult> Delete (int id)
         {
-            _sellerService.Remove(id);
+           await _sellerService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
-            var obj = _sellerService.FindById(id.Value);//pega o valor do ID
+            var obj = await _sellerService.FindByIdAsync(id.Value);//pega o valor do ID
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not found" });
@@ -89,30 +90,30 @@ namespace ProjetoLojaMVC.Controllers
             return View(obj);
         }
         //método get
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if(id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
-            var obj = _sellerService.FindById(id.Value);
+            var obj = await _sellerService.FindByIdAsync(id.Value);
             if(obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
             //abrir a tela de edição
-            List<Departament> departaments = _departmentService.FindALL();
+            List<Departament> departaments = await _departmentService.FindALLAsync();
             SellerFormViewModel viewModel = new SellerFormViewModel { Seller = obj, Departaments = departaments };
             return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Seller seller)
+        public async Task<IActionResult> Edit(int id, Seller seller)
         {
             if (!ModelState.IsValid)//testa se a view é válida
             {
-                var departaments = _departmentService.FindALL();
+                var departaments = await _departmentService.FindALLAsync();
                 var viewModel = new SellerFormViewModel { Seller = seller, Departaments = departaments };
 
                 return View(viewModel);
@@ -124,7 +125,7 @@ namespace ProjetoLojaMVC.Controllers
             }
             try
             {
-                _sellerService.Update(seller);
+                await _sellerService.UpdateAsync(seller);
                 return RedirectToAction(nameof(Index));
 
             }

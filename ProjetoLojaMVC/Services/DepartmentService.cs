@@ -1,7 +1,8 @@
 ﻿using ProjetoLojaMVC.Models;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProjetoLojaMVC.Services
 {
@@ -14,10 +15,10 @@ namespace ProjetoLojaMVC.Services
             _context = context;
         }
 
-        public List<Departament> FindALL()
+        public async Task<List<Departament>> FindALLAsync()//o TASK deixa a execução assíncrona  
         {
-            return _context.Departament.OrderBy(x => x.Name).ToList();//irá retornar uma lista ordenada por nome
-          
+            return await _context.Departament.OrderBy(x => x.Name).ToListAsync();//irá retornar uma lista ordenada por nome
+            //await indica que será tratado como assíncrono           
         }
     }
 }

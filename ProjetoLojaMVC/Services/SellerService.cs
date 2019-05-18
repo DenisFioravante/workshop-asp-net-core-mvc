@@ -18,34 +18,35 @@ namespace ProjetoLojaMVC.Services
             _context = context;
         }
 
-        public List<Seller> FindAll()
+        public async Task<List<Seller>> FindAllAsync()
         {
-            return _context.Seller.ToList();//retorna uma lista com todos os vendedores
+            return await _context.Seller.ToListAsync();//retorna uma lista com todos os vendedores
         }
 
-        public void Insert(Seller obj)//INSERE O FUNCIONÁRIO CADASTRADO NO BANCO DE DADOS
+        public async Task InsertAsync(Seller obj)//INSERE O FUNCIONÁRIO CADASTRADO NO BANCO DE DADOS
         {
             //obj.Departament = _context.Departament.First();//associa o primeiro departamento ao novo vendadedor cadastrado (APENAS PARA TESTE)
             _context.Add(obj);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public Seller FindById(int id)
+        public async Task<Seller> FindByIdAsync(int id)
         {
-            return _context.Seller.Include(obj => obj.Departament).FirstOrDefault(obj => obj.Id == id);//POR DEFAUL ELE SÓ TRAZ O NOME DO VENDEDOR 
+            return await _context.Seller.Include(obj => obj.Departament).FirstOrDefaultAsync(obj => obj.Id == id);//POR DEFAUL ELE SÓ TRAZ O NOME DO VENDEDOR 
             //CONTUDO COM A EXPRESSÃO LAMBDA FOI INCLUÍDO O DEPARTAMENTO PARA INCLUIR A EXPRESSÃO LABDA FOI CHAMADA A BIBLIOTECA 
             // using Microsoft.EntityFrameworkCore;
         }
 
-        public void Remove(int id)
+        public async Task RemoveAsync(int id)
         {
-            var obj = _context.Seller.Find(id);
+            var obj = await _context.Seller.FindAsync(id);
             _context.Seller.Remove(obj);
-            _context.SaveChanges();//FAZ A ALTERAÇÃO NO BANCO DE DADOS
+            await _context.SaveChangesAsync();//FAZ A ALTERAÇÃO NO BANCO DE DADOS
         }
-        public void Update(Seller obj)
+        public async Task UpdateAsync(Seller obj)
         {
-            if (!_context.Seller.Any(x => x.Id == obj.Id))
+            bool hasAny = await _context.Seller.AnyAsync(x => x.Id == obj.Id);
+            if (!hasAny)
             {
                 throw new NotFoundException("Id not found");
 
@@ -54,7 +55,7 @@ namespace ProjetoLojaMVC.Services
             try
             {
                 _context.Update(obj);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
             }
 
