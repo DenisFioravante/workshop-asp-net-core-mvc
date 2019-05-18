@@ -39,6 +39,13 @@ namespace ProjetoLojaMVC.Controllers
         [ValidateAntiForgeryToken]//PROTEÇÃO CONTRA O ENVIO DE DADOS MALICIOSOS APROVEITANDO A AUTENTICAÇÃO
         public IActionResult Create(Seller seller)// Recebe o objeto da requisição e o estancia É A ESSA AÇÃO QUE IRÁ DE FATO INSERIR O VENDEODR NO BANCO
         {
+            if (!ModelState.IsValid)//testa se a view é válida
+            {
+                var departaments = _departmentService.FindALL();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departaments = departaments };
+
+                return View(viewModel);
+            }
             _sellerService.Insert(seller);
             return RedirectToAction(nameof(Index));//depois de estanciar o objeto a ação irá redirecionar para o método Index
         }
@@ -103,7 +110,15 @@ namespace ProjetoLojaMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Seller seller)
         {
-            if( id!= seller.Id )
+            if (!ModelState.IsValid)//testa se a view é válida
+            {
+                var departaments = _departmentService.FindALL();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departaments = departaments };
+
+                return View(viewModel);
+            }
+
+            if ( id!= seller.Id )
             {
                 return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
             }
